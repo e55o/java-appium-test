@@ -5,8 +5,11 @@
     <classes>
       <class name="com.example.FirstAppiumTest">
         <methods>
+          <include name="CloseApp"/>
+          <include name="UserRegistrationTest"/>
           <include name="Setup"/>
-          <include name="simpleTest"/>
+          <include name="WebViewTest"/>
+          <include name="BeforeMethod"/>
         </methods>
       </class> <!-- com.example.FirstAppiumTest -->
     </classes>

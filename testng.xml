@@ -1,0 +1,7 @@
+<suite name="com.example">
+	<test name="FirstAppiumTest">
+		<classes>
+			<class name="com.example.FirstAppiumTest" />
+		</classes>
+	</test>
+</suite>
