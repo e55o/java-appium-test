@@ -3,15 +3,14 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.example.FirstAppiumTest">
+      <class name="com.example.AppiumTest">
         <methods>
-          <include name="CloseApp"/>
           <include name="UserRegistrationTest"/>
-          <include name="Setup"/>
-          <include name="WebViewTest"/>
+          <include name="CloseApp"/>
           <include name="BeforeMethod"/>
+          <include name="Setup"/>
         </methods>
-      </class> <!-- com.example.FirstAppiumTest -->
+      </class> <!-- com.example.AppiumTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

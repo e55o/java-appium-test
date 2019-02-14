@@ -1,11 +1,12 @@
 package com.example;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
@@ -13,13 +14,15 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import com.example.utilities.XlsReader;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 
-public class FirstAppiumTest {
+public class AppiumTest {
 	
   AppiumDriver<WebElement> driver;
+  List excelData;
   
   @BeforeClass
   public void Setup() throws MalformedURLException {
@@ -32,6 +35,15 @@ public class FirstAppiumTest {
 	  cap.setCapability("avd", "Nexus_5X_API_28");
 	  
 	  driver = new AppiumDriver<WebElement>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
+	  
+	  
+	try {
+		excelData = XlsReader.ReadExcelFile();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	  
+      
   }
   
   @BeforeMethod
@@ -77,6 +89,7 @@ public class FirstAppiumTest {
 	    w.equals("Text is sometimes displayed");
 		  
 	}
+  
 
 	@Test
 	public void TextFieldTest() throws InterruptedException {
@@ -91,7 +104,10 @@ public class FirstAppiumTest {
 	
 	@Test
 	public void UserRegistrationTest() throws InterruptedException {
-		  WebElement w;	  
+		  WebElement w;	
+		  
+		  String excel = excelData.get(0).toString();
+		  String[] splitExcelData = excel.split("\\s+");
 		  
 		  // Click on the Registration Button
 		TimeUnit.SECONDS.sleep(2);
@@ -100,15 +116,15 @@ public class FirstAppiumTest {
 	    
 	    TimeUnit.SECONDS.sleep(2);
 	    w = driver.findElement(By.id("io.selendroid.testapp:id/inputUsername"));
-	    w.sendKeys("username");
+	    w.sendKeys(splitExcelData[1]);
 	    
 	    TimeUnit.SECONDS.sleep(2);
 	    w = driver.findElement(By.id("io.selendroid.testapp:id/inputEmail"));
-	    w.sendKeys("email@email.com");
+	    w.sendKeys(splitExcelData[2]);
 	    
 	    TimeUnit.SECONDS.sleep(2);
 	    w = driver.findElement(By.id("io.selendroid.testapp:id/inputPassword"));
-	    w.sendKeys("password");
+	    w.sendKeys(splitExcelData[3]);
 	    
 	    driver.navigate().back();
 	    
@@ -117,7 +133,38 @@ public class FirstAppiumTest {
 	    w.click();
 		  
 	    TimeUnit.SECONDS.sleep(2);
-	    w = driver.findElement(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.ListView/android.widget.CheckedTextView[4]"));
+	    System.out.println(splitExcelData[4]);
+	    int index = 1;
+	    switch (splitExcelData[4]) {
+		    case "Ruby":
+		    	index = 1;
+		    	break;
+		    case "Php":
+		    	index = 2;
+		    	break;
+		    case "Scala":
+		    	index = 3;
+		    	break;
+		    case "Python":
+		    	index = 4;
+		    	break;
+		    case "Javascript":
+		    	index = 5;
+		    	break;
+		    case "Java":
+		    	index = 6;
+		    	break;
+		    case "C++":
+		    	index = 7;
+		    	break;
+		    case "C#":
+		    	index = 8;
+		    	break;
+		    default:
+		    	index=1;
+	    	
+	    }
+		w = driver.findElement(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.ListView/android.widget.CheckedTextView["+ index +"]"));
 	    w.click();
 	    
 	    TimeUnit.SECONDS.sleep(2);
@@ -125,8 +172,10 @@ public class FirstAppiumTest {
 	    w.click();
 	    
 	    TimeUnit.SECONDS.sleep(2);
-	    w = driver.findElement(By.id("io.selendroid.testapp:id/btnRegisterUser"));
-	    w.click();
+	    if (splitExcelData[5] != null){
+	    	w = driver.findElement(By.id("io.selendroid.testapp:id/btnRegisterUser"));
+		    w.click();
+	    }
 	    
 	    TimeUnit.SECONDS.sleep(2);
 	    w = driver.findElement(By.id("io.selendroid.testapp:id/buttonRegisterUser"));
@@ -160,6 +209,6 @@ public class FirstAppiumTest {
   @AfterClass
   public void CloseApp(){
   	//close the application
-//  	driver.quit();
+  	driver.quit();
   }
 }
